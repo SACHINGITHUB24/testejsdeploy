@@ -1,0 +1,182 @@
+<%- include('../partials/header', { title }) %>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-plus-circle text-primary me-2"></i>Create New Post
+                    </h3>
+                    <p class="text-muted mb-0 mt-1">Share your thoughts with the community</p>
+                </div>
+                
+                <div class="card-body p-4">
+                    <% if (error) { %>
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <%= error %>
+                        </div>
+                    <% } %>
+
+                    <form action="/posts/create" method="POST" id="createPostForm">
+                        <div class="mb-4">
+                            <label for="title" class="form-label fw-semibold">
+                                <i class="fas fa-heading me-1"></i>Title
+                            </label>
+                            <input type="text" 
+                                   class="form-control form-control-lg" 
+                                   id="title" 
+                                   name="title" 
+                                   required 
+                                   maxlength="100"
+                                   placeholder="Enter an engaging title for your post">
+                            <div class="form-text">
+                                <span id="titleCount">0</span>/100 characters
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="content" class="form-label fw-semibold">
+                                <i class="fas fa-align-left me-1"></i>Content
+                            </label>
+                            <textarea class="form-control" 
+                                      id="content" 
+                                      name="content" 
+                                      rows="12" 
+                                      required 
+                                      maxlength="2000"
+                                      placeholder="Write your post content here... Share your ideas, experiences, or stories with the community."></textarea>
+                            <div class="form-text">
+                                <span id="contentCount">0</span>/2000 characters
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="tags" class="form-label fw-semibold">
+                                <i class="fas fa-tags me-1"></i>Tags
+                            </label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="tags" 
+                                   name="tags" 
+                                   placeholder="javascript, web-development, tutorial (separate with commas)">
+                            <div class="form-text">
+                                Add relevant tags to help others discover your post. Separate multiple tags with commas.
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6 class="card-title">
+                                            <i class="fas fa-lightbulb text-warning me-1"></i>
+                                            Writing Tips
+                                        </h6>
+                                        <ul class="list-unstyled small mb-0">
+                                            <li><i class="fas fa-check text-success me-1"></i> Write a clear, descriptive title</li>
+                                            <li><i class="fas fa-check text-success me-1"></i> Structure your content with paragraphs</li>
+                                            <li><i class="fas fa-check text-success me-1"></i> Add relevant tags for discoverability</li>
+                                            <li><i class="fas fa-check text-success me-1"></i> Proofread before publishing</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6 class="card-title">
+                                            <i class="fas fa-eye text-info me-1"></i>
+                                            Preview
+                                        </h6>
+                                        <div id="preview" class="small text-muted">
+                                            Your post preview will appear here as you type...
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="/posts" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Cancel
+                            </a>
+                            <div>
+                                <button type="button" class="btn btn-outline-primary me-2" onclick="previewPost()">
+                                    <i class="fas fa-eye me-1"></i>Preview
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane me-1"></i>Publish Post
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const titleInput = document.getElementById('title');
+    const contentTextarea = document.getElementById('content');
+    const titleCount = document.getElementById('titleCount');
+    const contentCount = document.getElementById('contentCount');
+    const preview = document.getElementById('preview');
+
+    // Character counting
+    titleInput.addEventListener('input', function() {
+        titleCount.textContent = this.value.length;
+    });
+
+    contentTextarea.addEventListener('input', function() {
+        contentCount.textContent = this.value.length;
+        updatePreview();
+    });
+
+    function updatePreview() {
+        const title = titleInput.value;
+        const content = contentTextarea.value;
+        
+        if (title || content) {
+            preview.innerHTML = `
+                ${title ? `<h5>${title}</h5>` : ''}
+                ${content ? `<p>${content.substring(0, 200)}${content.length > 200 ? '...' : ''}</p>` : ''}
+            `;
+        } else {
+            preview.textContent = 'Your post preview will appear here as you type...';
+        }
+    }
+});
+
+function previewPost() {
+    const title = document.getElementById('title').value;
+    const content = document.getElementById('content').value;
+    
+    if (!title || !content) {
+        alert('Please enter both title and content to preview');
+        return;
+    }
+    
+    const previewWindow = window.open('', '_blank', 'width=600,height=400');
+    previewWindow.document.write(`
+        <html>
+        <head>
+            <title>Post Preview</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        </head>
+        <body class="p-4">
+            <div class="container">
+                <h1>${title}</h1>
+                <hr>
+                <div style="white-space: pre-line;">${content}</div>
+            </div>
+        </body>
+        </html>
+    `);
+}
+</script>
+
+<%- include('../partials/footer') %>

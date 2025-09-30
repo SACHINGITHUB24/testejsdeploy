@@ -1,0 +1,141 @@
+<%- include('../partials/header', { title }) %>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h2 mb-1">
+                        <i class="fas fa-blog text-primary me-2"></i>All Posts
+                    </h1>
+                    <p class="text-muted">Discover amazing content from our community</p>
+                </div>
+                <% if (user) { %>
+                    <a href="/posts/create" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Create Post
+                    </a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <% if (error) { %>
+        <div class="alert alert-warning" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <%= error %>
+        </div>
+    <% } %>
+
+    <% if (posts && posts.length > 0) { %>
+        <div class="row g-4">
+            <% posts.forEach(post => { %>
+                <div class="col-lg-6">
+                    <div class="card h-100 shadow-sm border-0 hover-card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="<%= post.author.avatar %>" 
+                                     alt="<%= post.author.username %>" 
+                                     class="rounded-circle me-3" 
+                                     width="40" height="40">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0"><%= post.author.username %></h6>
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar me-1"></i>
+                                        <%= new Date(post.createdAt).toLocaleDateString() %>
+                                    </small>
+                                </div>
+                                <div class="text-muted small">
+                                    <i class="fas fa-eye me-1"></i>
+                                    <%= post.views %>
+                                </div>
+                            </div>
+                            
+                            <h5 class="card-title">
+                                <a href="/posts/<%= post._id %>" class="text-decoration-none text-dark">
+                                    <%= post.title %>
+                                </a>
+                            </h5>
+                            
+                            <p class="card-text text-muted">
+                                <%= post.content.substring(0, 150) %>
+                                <% if (post.content.length > 150) { %>...
+                                <% } %>
+                            </p>
+                            
+                            <% if (post.tags && post.tags.length > 0) { %>
+                                <div class="mb-3">
+                                    <% post.tags.slice(0, 3).forEach(tag => { %>
+                                        <span class="badge bg-secondary me-1">
+                                            <%= tag %>
+                                        </span>
+                                    <% }); %>
+                                    <% if (post.tags.length > 3) { %>
+                                        <span class="badge bg-light text-dark">
+                                            +<%= post.tags.length - 3 %> more
+                                        </span>
+                                    <% } %>
+                                </div>
+                            <% } %>
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-muted small">
+                                    <i class="fas fa-heart text-danger me-1"></i>
+                                    <%= post.likes ? post.likes.length : 0 %> likes
+                                </div>
+                                <a href="/posts/<%= post._id %>" class="btn btn-outline-primary btn-sm">
+                                    Read More <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+
+        <!-- Pagination -->
+        <% if (pagination.totalPages > 1) { %>
+            <nav class="mt-5">
+                <ul class="pagination justify-content-center">
+                    <% if (pagination.hasPrev) { %>
+                        <li class="page-item">
+                            <a class="page-link" href="/posts?page=<%= pagination.currentPage - 1 %>">
+                                <i class="fas fa-chevron-left"></i> Previous
+                            </a>
+                        </li>
+                    <% } %>
+                    
+                    <% for (let i = Math.max(1, pagination.currentPage - 2); i <= Math.min(pagination.totalPages, pagination.currentPage + 2); i++) { %>
+                        <li class="page-item <%= i === pagination.currentPage ? 'active' : '' %>">
+                            <a class="page-link" href="/posts?page=<%= i %>"><%= i %></a>
+                        </li>
+                    <% } %>
+                    
+                    <% if (pagination.hasNext) { %>
+                        <li class="page-item">
+                            <a class="page-link" href="/posts?page=<%= pagination.currentPage + 1 %>">
+                                Next <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    <% } %>
+                </ul>
+            </nav>
+        <% } %>
+    <% } else { %>
+        <div class="text-center py-5">
+            <i class="fas fa-file-alt fa-4x text-muted mb-4"></i>
+            <h4 class="text-muted mb-3">No posts available</h4>
+            <p class="text-muted mb-4">Be the first to share something with the community!</p>
+            <% if (user) { %>
+                <a href="/posts/create" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus me-2"></i>Create First Post
+                </a>
+            <% } else { %>
+                <a href="/users/register" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>Join to Post
+                </a>
+            <% } %>
+        </div>
+    <% } %>
+</div>
+
+<%- include('../partials/footer') %>

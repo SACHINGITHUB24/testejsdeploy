@@ -1,0 +1,295 @@
+<%- include('partials/header', { title }) %>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="search-header mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="h2 mb-1">
+                            <i class="fas fa-search text-primary me-2"></i>
+                            Search Results
+                        </h1>
+                        <% if (query && query.trim()) { %>
+                            <p class="text-muted mb-0">
+                                Results for "<strong><%= query %></strong>"
+                                <% if (posts && posts.length > 0) { %>
+                                    • <%= posts.length %> post<%= posts.length !== 1 ? 's' : '' %> found
+                                <% } %>
+                            </p>
+                        <% } else { %>
+                            <p class="text-muted mb-0">Enter a search term to find posts</p>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Search Form -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form action="/search" method="GET" id="searchForm">
+                        <div class="row align-items-end">
+                            <div class="col-lg-8 mb-3 mb-lg-0">
+                                <label for="searchQuery" class="form-label fw-semibold">
+                                    <i class="fas fa-search me-1"></i>Search Query
+                                </label>
+                                <input type="text" 
+                                       class="form-control form-control-lg" 
+                                       id="searchQuery"
+                                       name="q" 
+                                       value="<%= query || '' %>"
+                                       placeholder="Search posts, titles, content..."
+                                       autocomplete="off">
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-search me-2"></i>Search
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <small class="text-muted">
+                                <i class="fas fa-lightbulb me-1"></i>
+                                <strong>Tips:</strong> Try keywords like "javascript", "tutorial", "guide" or author names
+                            </small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Results -->
+    <div class="row">
+        <div class="col-12">
+            <% if (error) { %>
+                <div class="alert alert-warning" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <%= error %>
+                </div>
+            <% } %>
+
+            <% if (query && query.trim() && posts && posts.length > 0) { %>
+                <!-- Results -->
+                <div class="results-container">
+                    <% posts.forEach(post => { %>
+                        <div class="card border-0 shadow-sm mb-4 hover-card">
+                            <div class="card-body p-4">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <img src="<%= post.author.avatar %>" 
+                                                 alt="<%= post.author.username %>" 
+                                                 class="rounded-circle me-2" 
+                                                 width="24" height="24">
+                                            <small class="text-muted">
+                                                By <strong><%= post.author.username %></strong>
+                                                • <%= new Date(post.createdAt).toLocaleDateString() %>
+                                            </small>
+                                        </div>
+                                        
+                                        <h5 class="card-title mb-2">
+                                            <a href="/posts/<%= post._id %>" class="text-decoration-none text-dark">
+                                                <%= post.title %>
+                                            </a>
+                                        </h5>
+                                        
+                                        <p class="card-text text-muted mb-3">
+                                            <%= post.content.substring(0, 200) %>
+                                            <% if (post.content.length > 200) { %>...
+                                            <% } %>
+                                        </p>
+                                        
+                                        <% if (post.tags && post.tags.length > 0) { %>
+                                            <div class="tags mb-2">
+                                                <% post.tags.slice(0, 4).forEach(tag => { %>
+                                                    <a href="/search?q=<%= encodeURIComponent(tag) %>" 
+                                                       class="badge bg-secondary text-decoration-none me-1 mb-1">
+                                                        <%= tag %>
+                                                    </a>
+                                                <% }); %>
+                                                <% if (post.tags.length > 4) { %>
+                                                    <span class="badge bg-light text-dark">
+                                                        +<%= post.tags.length - 4 %> more
+                                                    </span>
+                                                <% } %>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                    
+                                    <div class="col-md-4 text-md-end">
+                                        <div class="d-flex flex-column h-100 justify-content-between">
+                                            <div class="mb-2">
+                                                <div class="text-muted small mb-1">
+                                                    <i class="fas fa-eye me-1"></i>
+                                                    <%= post.views %> views
+                                                </div>
+                                                <div class="text-muted small">
+                                                    <i class="fas fa-heart text-danger me-1"></i>
+                                                    <%= post.likes ? post.likes.length : 0 %> likes
+                                                </div>
+                                            </div>
+                                            
+                                            <a href="/posts/<%= post._id %>" class="btn btn-outline-primary btn-sm">
+                                                Read More <i class="fas fa-arrow-right ms-1"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            <% } else if (query && query.trim()) { %>
+                <!-- No Results -->
+                <div class="no-results text-center py-5">
+                    <i class="fas fa-search fa-4x text-muted mb-4"></i>
+                    <h3 class="h4 text-muted mb-3">No posts found</h3>
+                    <p class="text-muted mb-4">
+                        We couldn't find any posts matching "<strong><%= query %></strong>". 
+                        Try adjusting your search terms or browse our popular content below.
+                    </p>
+                    
+                    <div class="d-flex justify-content-center gap-3 flex-wrap mb-4">
+                        <a href="/posts" class="btn btn-primary">
+                            <i class="fas fa-blog me-2"></i>Browse All Posts
+                        </a>
+                        <button class="btn btn-outline-secondary" onclick="document.getElementById('searchQuery').focus()">
+                            <i class="fas fa-search me-2"></i>Try Different Terms
+                        </button>
+                    </div>
+                    
+                    <!-- Search Suggestions -->
+                    <div class="card bg-light border-0">
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                <i class="fas fa-lightbulb text-warning me-1"></i>
+                                Search Suggestions
+                            </h6>
+                            <div class="d-flex flex-wrap justify-content-center gap-2">
+                                <a href="/search?q=javascript" class="badge bg-primary text-decoration-none">javascript</a>
+                                <a href="/search?q=tutorial" class="badge bg-success text-decoration-none">tutorial</a>
+                                <a href="/search?q=web development" class="badge bg-info text-decoration-none">web development</a>
+                                <a href="/search?q=nodejs" class="badge bg-warning text-decoration-none">nodejs</a>
+                                <a href="/search?q=guide" class="badge bg-danger text-decoration-none">guide</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } else { %>
+                <!-- Search Landing -->
+                <div class="search-landing text-center py-5">
+                    <i class="fas fa-search fa-4x text-primary mb-4"></i>
+                    <h3 class="h4 mb-3">Discover Amazing Content</h3>
+                    <p class="text-muted mb-4">
+                        Use the search above to find posts by title, content, tags, or author name.
+                    </p>
+                    
+                    <!-- Popular Tags -->
+                    <div class="card bg-light border-0">
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                <i class="fas fa-fire text-danger me-1"></i>
+                                Popular Topics
+                            </h6>
+                            <div class="d-flex flex-wrap justify-content-center gap-2">
+                                <a href="/search?q=javascript" class="btn btn-outline-primary btn-sm">javascript</a>
+                                <a href="/search?q=nodejs" class="btn btn-outline-success btn-sm">nodejs</a>
+                                <a href="/search?q=tutorial" class="btn btn-outline-info btn-sm">tutorial</a>
+                                <a href="/search?q=web development" class="btn btn-outline-warning btn-sm">web development</a>
+                                <a href="/search?q=express" class="btn btn-outline-danger btn-sm">express</a>
+                                <a href="/search?q=mongodb" class="btn btn-outline-secondary btn-sm">mongodb</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchQuery = document.getElementById('searchQuery');
+    
+    // Focus on search input if no query
+    if (!searchQuery.value.trim()) {
+        searchQuery.focus();
+    }
+    
+    // Highlight search terms in results
+    const query = '<%= query || "" %>';
+    if (query.trim()) {
+        highlightSearchTerms(query.trim());
+    }
+});
+
+function highlightSearchTerms(query) {
+    const terms = query.toLowerCase().split(/\s+/);
+    const elements = document.querySelectorAll('.card-title, .card-text');
+    
+    elements.forEach(element => {
+        let html = element.innerHTML;
+        
+        terms.forEach(term => {
+            if (term.length > 2) { // Only highlight terms longer than 2 characters
+                const regex = new RegExp(`(${term})`, 'gi');
+                html = html.replace(regex, '<mark>$1</mark>');
+            }
+        });
+        
+        element.innerHTML = html;
+    });
+}
+
+// Auto-suggestion functionality
+document.getElementById('searchQuery').addEventListener('input', function(e) {
+    const query = e.target.value.trim();
+    
+    if (query.length >= 2) {
+        // Here you could implement real-time search suggestions
+        // For now, we'll just show a simple placeholder
+    }
+});
+</script>
+
+<style>
+.hover-card {
+    transition: all 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+}
+
+mark {
+    background-color: #fff3cd;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+.search-landing, .no-results {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+<%- include('partials/footer') %>

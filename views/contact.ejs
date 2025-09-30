@@ -1,0 +1,280 @@
+<%- include('partials/header', { title }) %>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="text-center mb-5">
+                <i class="fas fa-envelope fa-4x text-primary mb-3"></i>
+                <h1 class="display-4 mb-3">Contact Us</h1>
+                <p class="lead text-muted">
+                    Have questions about the EJS Demo project? We'd love to hear from you!
+                </p>
+            </div>
+
+            <div class="card shadow border-0">
+                <div class="card-body p-5">
+                    <form id="contactForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName" class="form-label fw-semibold">
+                                    <i class="fas fa-user me-1"></i>First Name
+                                </label>
+                                <input type="text" 
+                                       class="form-control form-control-lg" 
+                                       id="firstName" 
+                                       name="firstName" 
+                                       required 
+                                       placeholder="Your first name">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName" class="form-label fw-semibold">
+                                    <i class="fas fa-user me-1"></i>Last Name
+                                </label>
+                                <input type="text" 
+                                       class="form-control form-control-lg" 
+                                       id="lastName" 
+                                       name="lastName" 
+                                       required 
+                                       placeholder="Your last name">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold">
+                                <i class="fas fa-envelope me-1"></i>Email Address
+                            </label>
+                            <input type="email" 
+                                   class="form-control form-control-lg" 
+                                   id="email" 
+                                   name="email" 
+                                   required 
+                                   placeholder="your.email@example.com">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="subject" class="form-label fw-semibold">
+                                <i class="fas fa-tag me-1"></i>Subject
+                            </label>
+                            <select class="form-select form-select-lg" id="subject" name="subject" required>
+                                <option value="">Choose a subject...</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="technical">Technical Question</option>
+                                <option value="deployment">Deployment Help</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="bug">Bug Report</option>
+                                <option value="collaboration">Collaboration</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="message" class="form-label fw-semibold">
+                                <i class="fas fa-comment me-1"></i>Message
+                            </label>
+                            <textarea class="form-control" 
+                                      id="message" 
+                                      name="message" 
+                                      rows="6" 
+                                      required 
+                                      maxlength="1000"
+                                      placeholder="Please describe your question or inquiry in detail..."></textarea>
+                            <div class="form-text">
+                                <span id="messageCount">0</span>/1000 characters
+                            </div>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter">
+                            <label class="form-check-label" for="newsletter">
+                                <i class="fas fa-bell me-1"></i>
+                                I'd like to receive updates about new features and improvements
+                            </label>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="row mt-5">
+        <div class="col-lg-4 text-center mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <i class="fas fa-code fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Development</h5>
+                    <p class="card-text text-muted">
+                        Questions about the code, architecture, or implementation details?
+                    </p>
+                    <a href="mailto:dev@ejsdemo.com" class="btn btn-outline-primary">
+                        <i class="fas fa-envelope me-1"></i>dev@ejsdemo.com
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 text-center mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <i class="fas fa-rocket fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Deployment</h5>
+                    <p class="card-text text-muted">
+                        Need help with deployment, scaling, or production setup?
+                    </p>
+                    <a href="mailto:deploy@ejsdemo.com" class="btn btn-outline-success">
+                        <i class="fas fa-envelope me-1"></i>deploy@ejsdemo.com
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 text-center mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <i class="fas fa-handshake fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Partnerships</h5>
+                    <p class="card-text text-muted">
+                        Interested in collaboration or have a business inquiry?
+                    </p>
+                    <a href="mailto:partners@ejsdemo.com" class="btn btn-outline-warning">
+                        <i class="fas fa-envelope me-1"></i>partners@ejsdemo.com
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h2 class="text-center mb-4">
+                <i class="fas fa-question-circle text-primary me-2"></i>
+                Frequently Asked Questions
+            </h2>
+        </div>
+        
+        <div class="col-lg-8 mx-auto">
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="faq1">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1">
+                            Is this project open source?
+                        </button>
+                    </h3>
+                    <div id="faqCollapse1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes! This EJS Demo project is designed as an educational resource to showcase modern web development practices. Feel free to explore, learn from, and adapt the code for your own projects.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="faq2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2">
+                            Can I use this for production applications?
+                        </button>
+                    </h3>
+                    <div id="faqCollapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Absolutely! This project follows production-ready practices including security measures, error handling, and deployment configurations. However, make sure to customize it for your specific needs and conduct thorough testing.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="faq3">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3">
+                            How do I deploy this application?
+                        </button>
+                    </h3>
+                    <div id="faqCollapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            The project includes Docker configuration and deployment guides in the README. You can deploy it to various platforms including Heroku, AWS, DigitalOcean, or any VPS that supports Node.js applications.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="faq4">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4">
+                            What database does this use?
+                        </button>
+                    </h3>
+                    <div id="faqCollapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            This application uses MongoDB with Mongoose ODM. The connection is configured to work with both local MongoDB installations and cloud services like MongoDB Atlas.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-check-circle text-success me-2"></i>Message Sent
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Thank you for your message! We've received your inquiry and will get back to you soon.</p>
+                <p class="text-muted mb-0">Expected response time: 24-48 hours</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    <i class="fas fa-check me-1"></i>Got it
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const messageTextarea = document.getElementById('message');
+    const messageCount = document.getElementById('messageCount');
+    const contactForm = document.getElementById('contactForm');
+
+    // Character counting
+    messageTextarea.addEventListener('input', function() {
+        messageCount.textContent = this.value.length;
+    });
+
+    // Form submission
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Simulate form submission
+        const submitButton = e.target.querySelector('button[type="submit"]');
+        const originalText = submitButton.innerHTML;
+        
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+        
+        setTimeout(() => {
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalText;
+            
+            // Show success modal
+            new bootstrap.Modal(document.getElementById('successModal')).show();
+            
+            // Reset form
+            contactForm.reset();
+            messageCount.textContent = '0';
+        }, 2000);
+    });
+});
+</script>
+
+<%- include('partials/footer') %>

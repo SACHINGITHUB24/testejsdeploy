@@ -1,0 +1,163 @@
+<%- include('partials/header', { title }) %>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 text-center">
+            <div class="error-container">
+                <div class="error-number mb-4">
+                    <h1 class="display-1 text-danger fw-bold">500</h1>
+                </div>
+                
+                <div class="error-icon mb-4">
+                    <i class="fas fa-exclamation-triangle fa-4x text-warning"></i>
+                </div>
+                
+                <h2 class="h3 mb-3">Internal Server Error</h2>
+                <p class="text-muted mb-4">
+                    Oops! Something went wrong on our end. Our team has been notified and 
+                    we're working to fix this issue as quickly as possible.
+                </p>
+                
+                <div class="d-flex justify-content-center gap-3 flex-wrap mb-5">
+                    <a href="/" class="btn btn-primary">
+                        <i class="fas fa-home me-2"></i>Go Home
+                    </a>
+                    <button class="btn btn-outline-primary" onclick="location.reload()">
+                        <i class="fas fa-redo me-2"></i>Try Again
+                    </button>
+                    <a href="/contact" class="btn btn-outline-secondary">
+                        <i class="fas fa-envelope me-2"></i>Report Issue
+                    </a>
+                </div>
+                
+                <!-- Error Details (Development Mode) -->
+                <% if (typeof error !== 'undefined' && error && process.env.NODE_ENV !== 'production') { %>
+                    <div class="card border-danger">
+                        <div class="card-header bg-danger text-white">
+                            <h6 class="mb-0">
+                                <i class="fas fa-bug me-2"></i>
+                                Debug Information (Development Mode)
+                            </h6>
+                        </div>
+                        <div class="card-body text-start">
+                            <h6>Error Message:</h6>
+                            <p class="text-danger"><%= error.message %></p>
+                            
+                            <% if (error.stack) { %>
+                                <h6>Stack Trace:</h6>
+                                <pre class="bg-light p-3 small"><%= error.stack %></pre>
+                            <% } %>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Troubleshooting Tips -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h4 class="text-center mb-4">
+                <i class="fas fa-tools text-primary me-2"></i>
+                What You Can Do
+            </h4>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-redo fa-2x text-primary mb-3"></i>
+                    <h6 class="card-title">Refresh Page</h6>
+                    <p class="card-text small text-muted">
+                        Sometimes a simple refresh can resolve temporary issues
+                    </p>
+                    <button class="btn btn-sm btn-outline-primary" onclick="location.reload()">
+                        Refresh Now
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-clock fa-2x text-warning mb-3"></i>
+                    <h6 class="card-title">Wait a Moment</h6>
+                    <p class="card-text small text-muted">
+                        We might be experiencing high traffic. Please try again in a few minutes
+                    </p>
+                    <button class="btn btn-sm btn-outline-warning" onclick="setTimeout(() => location.reload(), 30000)">
+                        Auto Retry (30s)
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-envelope fa-2x text-success mb-3"></i>
+                    <h6 class="card-title">Contact Support</h6>
+                    <p class="card-text small text-muted">
+                        If the issue persists, please let us know so we can help
+                    </p>
+                    <a href="/contact" class="btn btn-sm btn-outline-success">
+                        Report Issue
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Status Information -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-info" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-info-circle fa-2x me-3"></i>
+                    <div>
+                        <h6 class="alert-heading mb-1">System Status</h6>
+                        <p class="mb-0">
+                            All systems are operational. This appears to be a temporary issue. 
+                            <strong>Error ID:</strong> <%= new Date().getTime() %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.error-container {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.error-number {
+    position: relative;
+}
+
+.error-number::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #dc3545, transparent);
+}
+</style>
+
+<%- include('partials/footer') %>
